@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import fetchBatterSeasonStats  from "../lib/fetchBatterSeasonStats";
 import fetchBatterDailyStats from "../lib/fetchBatterDailyStats";
 import fetchPitcherDailyStats from "../lib/fetchPitcherDailyStats";
+import fetchPitcherSeasonStats from "../lib/fetchPitcherSeasonStats";
 import fetchPlayers from "../lib/fetchPlayers";
 
 const PlayerDetails = () => {
@@ -24,6 +25,7 @@ const PlayerDetails = () => {
                 if (playerBio.position === 'P'){
                     const dailyData = await fetchPitcherDailyStats(playerId)
                     setPlayerDailyStats(dailyData)
+                    const seasonData = await fetchPitcherSeasonStats(playerId)
                 }
                 else {
                     const dailyData = await fetchBatterDailyStats(playerId)

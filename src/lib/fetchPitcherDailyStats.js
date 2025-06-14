@@ -3,7 +3,7 @@ const fetchPitcherDailyStats = async (selectedPlayerId) => {
     let url = `http://localhost:3000/api/pitchers`
     try {
         if (selectedPlayerId) {
-           url += `/${selectedPlayerId}`;
+           url += `/${selectedPlayerId}/dailyStats`;
         }
 
         const response = await fetch(url);

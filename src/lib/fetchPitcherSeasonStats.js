@@ -1,4 +1,4 @@
-const fetchPitcherDailyStats = async (selectedPlayerId) => {
+const fetchPitcherSeasonStats = async (selectedPlayerId) => {
     console.log('fetching pitcher daily stats')
     let url = `http://localhost:3000/api/pitchers`
     try {
@@ -18,4 +18,4 @@ const fetchPitcherDailyStats = async (selectedPlayerId) => {
     }
 };
 
-export default fetchPitcherDailyStats;
+export default fetchPitcherSeasonStats;

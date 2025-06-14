@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import {PlayerBioCard} from "./PlayerBioCard";
 import logo from '../../app/logo2.png'
 import '../../app/App.css'
+import fetchPitcherSeasonStats from "../../lib/fetchPitcherSeasonStats";
 
 
 const PlayerDetails = () => {
@@ -40,14 +41,16 @@ const PlayerDetails = () => {
         const loadSeasonStats = async () => {
             setSeasonStatsIsLoading(true)
             try {
-                const data = await fetchBatterSeasonStats(playerBio.playerId)
+                const data = playerBio.position === 'P'
+                    ? await fetchPitcherSeasonStats(playerBio.playerId)
+                    : await fetchBatterSeasonStats(playerBio.playerId)
                 setPlayerSeasonStats(data)
                 } catch (err) {
                     setError(err.message);
                 } finally {
                     setSeasonStatsIsLoading(false);
                 }
-            }
+            };
         loadSeasonStats();
     }, [playerBio]);
 
@@ -65,7 +68,7 @@ const PlayerDetails = () => {
                 </div>
         );
     }
-    return  playerDailyStats.length > 0 &&(
+    return  playerSeasonStats.length > 0 &&(
             <div className="player-info-grid">
                 <div className="player-header">
                     <img src={logo} alt="..." style={{ width: '100px', height: 'auto' }} />
@@ -77,10 +80,25 @@ const PlayerDetails = () => {
                     {playerBio.position === 'P' ?
                         <div className="info-content">
                             <div className="info-item">
-                                    <span className="label"> Wins </span>
+                                    <span className="label"> Games </span>
+                                    <span className="value"> {playerSeasonStats[0].games} </span>
+
                             </div>
                             <div className="info-item">
-                                <span className="label">Losses:</span>
+                                    <span className="label"> ERA </span>
+                                    <span className="value"> {playerSeasonStats[0].ERA} </span>
+                            </div>
+                              <div className="info-item">
+                                    <span className="label"> Opponent BA </span>
+                                    <span className="value"> {playerSeasonStats[0].opponentBA} </span>
+                            </div>
+                            <div className="info-item">
+                                    <span className="label"> Strikeouts </span>
+                                    <span className="value"> {playerSeasonStats[0].strikeouts} </span>
+                            </div>
+                            <div className="info-item">
+                                <span className="label">Walks:</span>
+                                <span className="value">{playerSeasonStats[0].walks} </span>
                             </div>
                         </div>
                         :
