@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import fetchBatterSeasonStats  from "../../lib/fetchBatterSeasonStats";
 import fetchBatterDailyStats from "../../lib/fetchBatterDailyStats";
 import fetchPitcherDailyStats from "../../lib/fetchPitcherDailyStats";
+import fetchPitcherSeasonStats from "../../lib/fetchPitcherSeasonStats";
+import fetchPitchStats from "../../lib/fetchPitchStats";
 import { useLocation } from 'react-router-dom';
 import {PlayerBioCard} from "./PlayerBioCard";
 import logo from '../../app/logo2.png'
 import '../../app/App.css'
-import fetchPitcherSeasonStats from "../../lib/fetchPitcherSeasonStats";
+
 
 
 const PlayerDetails = () => {
@@ -68,7 +70,7 @@ const PlayerDetails = () => {
                 </div>
         );
     }
-    return  playerSeasonStats.length > 0 &&(
+    return  playerSeasonStats && (
             <div className="player-info-grid">
                 <div className="player-header">
                     <img src={logo} alt="..." style={{ width: '100px', height: 'auto' }} />
@@ -81,24 +83,24 @@ const PlayerDetails = () => {
                         <div className="info-content">
                             <div className="info-item">
                                     <span className="label"> Games </span>
-                                    <span className="value"> {playerSeasonStats[0].games} </span>
+                                    <span className="value"> {playerSeasonStats.gameStats.games} </span>
 
                             </div>
                             <div className="info-item">
                                     <span className="label"> ERA </span>
-                                    <span className="value"> {playerSeasonStats[0].ERA} </span>
+                                    <span className="value"> {playerSeasonStats.gameStats.ERA} </span>
                             </div>
                               <div className="info-item">
                                     <span className="label"> Opponent BA </span>
-                                    <span className="value"> {playerSeasonStats[0].opponentBA} </span>
+                                    <span className="value"> {playerSeasonStats.gameStats.opponentBA} </span>
                             </div>
                             <div className="info-item">
                                     <span className="label"> Strikeouts </span>
-                                    <span className="value"> {playerSeasonStats[0].strikeouts} </span>
+                                    <span className="value"> {playerSeasonStats.gameStats.strikeouts} </span>
                             </div>
                             <div className="info-item">
                                 <span className="label">Walks:</span>
-                                <span className="value">{playerSeasonStats[0].walks} </span>
+                                <span className="value">{playerSeasonStats.gameStats.walks} </span>
                             </div>
                         </div>
                         :
@@ -161,14 +163,16 @@ const PlayerDetails = () => {
                         <div className="stats-grid">
                              {playerBio.position === 'P' ? playerDailyStats.map((pitcher) => (
                                  <div key={pitcher.pitcherId} className="stat-label">
-                                        <div className="stat-item">
-                                            <span className="stat-label">
+                                        <span className="stat-label"> {pitcher.gameDate}</span>
+                                            <div className="stat-item">
+                                                <span className="stat-label">
                                                     {pitcher.inningsPitched + 'IP, '}
+                                                    {pitcher.earnedRuns + 'ER, '}
                                                     {pitcher.runs + 'R, '}
                                                     {pitcher.hits + 'H, '}
                                                     {pitcher.walks > 0 ? ' ' + pitcher.walks + 'BB' : ''}
                                                     {pitcher.strikeouts > 0 ? ' ' + pitcher.strikeouts + "K" : ''}
-                                            </span>
+                                                </span>
                                         </div>
                                  </div>
                                 ))
@@ -187,7 +191,7 @@ const PlayerDetails = () => {
                                         </div>
                                     )
                                 )
-                            };
+                            }
                         </div>
                     </div>
                 )}
